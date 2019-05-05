@@ -6,6 +6,7 @@ from flask import Flask, request
 
 bot = telebot.TeleBot("890044169:AAEyYetqi0ZLqFzFnDAkpHW6QNWdgzcgfe0")
 server = Flask(__name__)
+server = SSLify(server)
 
 
 @bot.message_handler(commands=['start'])
@@ -23,8 +24,8 @@ def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
 
-bot.polling()
 
+bot.polling()
 
 # @server.route("/")
 # def webhook():
@@ -34,4 +35,4 @@ bot.polling()
 #
 # if __name__ == "__main__":
 #     server.run()
-#server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
+# server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
