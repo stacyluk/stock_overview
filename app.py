@@ -32,4 +32,5 @@ def getMessage():
 #     return "!", 200
 #
 if __name__ == "__main__":
-    server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
+    server.run()
+    #server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
