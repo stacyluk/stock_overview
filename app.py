@@ -1,7 +1,5 @@
-# from flask import Flask, request, jsonify
 from flask_sslify import SSLify
 import telebot
-import pyTelegramBotAPI
 from flask import Flask, request
 
 bot = telebot.TeleBot("890044169:AAEyYetqi0ZLqFzFnDAkpHW6QNWdgzcgfe0")
@@ -34,5 +32,4 @@ def getMessage():
 #     return "!", 200
 #
 if __name__ == "__main__":
-    server.run()
-# server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
+    server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
