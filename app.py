@@ -4,7 +4,7 @@ from flask import Flask, request
 
 bot = telebot.TeleBot("890044169:AAEyYetqi0ZLqFzFnDAkpHW6QNWdgzcgfe0")
 server = Flask(__name__)
-server = SSLify(server)
+sslify = SSLify(server)
 
 
 @bot.message_handler(commands=['start'])
