@@ -23,14 +23,14 @@ def getMessage():
     return "!", 200
 
 
-bot.polling()
+#bot.polling()
 
-# @server.route("/")
-# def webhook():
-#     bot.remove_webhook()
-#     bot.set_webhook(url="https://.../890044169:AAEyYetqi0ZLqFzFnDAkpHW6QNWdgzcgfe0")
-#     return "!", 200
-#
+@server.route("/")
+def webhook():
+    bot.remove_webhook()
+    bot.set_webhook(url="https://.../890044169:AAEyYetqi0ZLqFzFnDAkpHW6QNWdgzcgfe0")
+    return "!", 200
+
 if __name__ == "__main__":
     server.run()
     #server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
