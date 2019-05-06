@@ -23,7 +23,7 @@ def getMessage():
     return "!", 200
 
 
-# bot.polling()
+bot.polling()
 
 # @server.route("/")
 # def webhook():
