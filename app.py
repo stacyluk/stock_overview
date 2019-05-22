@@ -18,23 +18,23 @@ def start(message):
 
 @bot.message_handler(commands=['help'])
 def help(message):
-    bot.send_message(message.from_user.id, "Я бот, помогающий совершать выгодные инвестиции."
-                                           "Ты можешь управлять мной с помощью следующих команд:"
-                                           "/stockinfo - информация по стоимости акций ведущих компаний"
+    bot.send_message(message.from_user.id, "Я бот, помогающий совершать выгодные инвестиции.\n\v"
+                                           "Ты можешь управлять мной с помощью следующих команд:\n\v"
+                                           "/stockinfo - информация по стоимости акций ведущих компаний\n"
                                            "/stockinfo<oтрасль> - информация по стоимости акций ведущих "
-                                           "компаний конкретной области ()"
-                                           "/profit - в какие отрасли выгоднее инвестировать сегодня"
-                                           "/profitwhy - в какие отрасли выгоднее инвестировать и почему")
+                                           "компаний конкретной области (нефть - oil)\n"
+                                           "/profit - в какие отрасли выгоднее инвестировать сегодня\n"
+                                           "/profitwhy - в какие отрасли выгоднее инвестировать и почему\n")
 
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def get_text_messages(message):
     if message.text == "/stockinfo":
-        bot.send_message(message.from_user.id, "Извените, неполадки в соединении с сервером.")
+        bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
     elif message.text == "/profit":
-        bot.send_message(message.from_user.id, "Извените, неполадки в соединении с сервером.")
+        bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
     elif message.text == "/profitwhy":
-        bot.send_message(message.from_user.id, "Извените, неполадки в соединении с сервером.")
+        bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
     else:
         bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /help.")
 
