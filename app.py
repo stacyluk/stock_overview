@@ -33,6 +33,10 @@ def help(message):
 def get_text_messages(message):
     if message.text == "/stockinfo":
         bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
+    elif message.text == "/stockinfooil":
+        bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
+    elif message.text == "/stockinfocorporation":
+        bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
     elif message.text == "/profit":
         bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
     elif message.text == "/profitwhy":
