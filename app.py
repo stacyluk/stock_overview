@@ -48,57 +48,15 @@ def get_text_messages(message):
     if message.text == "/stockinfo":
         bot.send_message(message.from_user.id, "Выберите одну из трех компаний, для которой вы хотите посмотреть предсказания цены акций: /Microsoft, /Google или /Facebook.")
     elif message.text == "/Microsoft":
-        ts = TimeSeries(key='VBE1LX2V96V0BHZE', output_format='pandas')
-        data, meta_data = ts.get_daily(symbol='MSFT', outputsize='compact')
-        data['ds'] = data.index
-        data['ds'] = data['ds'].apply(str_to_date)
-        data['y'] = data['4. close']
-        df = pd.DataFrame({'ds': data['ds'].values, 'y': data['y'].values})
-        m.fit(df)
-        future = m.make_future_dataframe(periods=1)
-        forecast = m.predict(future)
-        fig1 = m.plot(forecast)
-        plt.xlabel('Дата')
-        plt.ylabel('Цена')
-        plt.savefig('foo.png') 
-        bot.send_photo(message.from_user.id, open('foo.png', 'rb'))
-        #bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
+        bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
     elif message.text == "/Google":
-        ts = TimeSeries(key='VBE1LX2V96V0BHZE', output_format='pandas')
-        data, meta_data = ts.get_daily(symbol='GOOGL', outputsize='compact')
-        data['ds'] = data.index
-        data['ds'] = data['ds'].apply(str_to_date)
-        data['y'] = data['4. close']
-        df = pd.DataFrame({'ds': data['ds'].values, 'y': data['y'].values})
-        m.fit(df)
-        future = m.make_future_dataframe(periods=1)
-        forecast = m.predict(future)
-        fig1 = m.plot(forecast)
-        plt.xlabel('Дата')
-        plt.ylabel('Цена')
-        plt.savefig('foo.png') 
-        bot.send_photo(message.from_user.id, open('foo.png', 'rb'))
-        #bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
+        bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
     elif message.text == "/Facebook":
-        ts = TimeSeries(key='VBE1LX2V96V0BHZE', output_format='pandas')
-        data, meta_data = ts.get_daily(symbol='FB', outputsize='compact')
-        data['ds'] = data.index
-        data['ds'] = data['ds'].apply(str_to_date)
-        data['y'] = data['4. close']
-        df = pd.DataFrame({'ds': data['ds'].values, 'y': data['y'].values})
-        m.fit(df)
-        future = m.make_future_dataframe(periods=1)
-        forecast = m.predict(future)
-        fig1 = m.plot(forecast)
-        plt.xlabel('Дата')
-        plt.ylabel('Цена')
-        plt.savefig('foo.png') 
-        bot.send_photo(message.from_user.id, open('foo.png', 'rb'))
-        #bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
-    #elif message.text == "/profitwhy":
-    #    bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
-    #else:
-    #    bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /help.")
+        bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
+    elif message.text == "/profitwhy":
+       bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
+    else:
+       bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /help.")
 
 
 @server.route("/" + TOKEN, methods=['POST'])
