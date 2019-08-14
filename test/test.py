@@ -4,7 +4,7 @@ import numpy as np
 
 
 sys.path.append('../')
-from model.preprocessor import get_train_data
+from model.preprocessor import get_prediction_data
 
 
 class GetTrainDataTests(unittest.TestCase):
@@ -16,7 +16,7 @@ class GetTrainDataTests(unittest.TestCase):
         """
         Проверка функции с параметрами window=2, n_days_forward=5
         """
-        train = get_train_data(self.array_1, window=2, n_days_forward=5)
+        train = get_prediction_data(self.array_1, window=2, n_days_forward=5)
         answer = np.array([[7, 9],
                            [9, 30],
                            [30, 53],
@@ -28,7 +28,7 @@ class GetTrainDataTests(unittest.TestCase):
         """
         Проверка функции с параметрами window=1, n_days_forward=7
         """
-        train = get_train_data(self.array_1, window=1, n_days_forward=7)
+        train = get_prediction_data(self.array_1, window=1, n_days_forward=7)
         answer = np.array([[14], [7], [9], [30], [53], [42], [44]])
         self.assertTrue((train == answer).all())
 
@@ -38,7 +38,7 @@ class GetTrainDataTests(unittest.TestCase):
         """
         array = np.array([])
         with self.assertRaises(ValueError) as context:
-            get_train_data(array)
+            get_prediction_data(array)
 
         self.assertTrue('Empty array' in str(context.exception))
 
@@ -48,9 +48,10 @@ class GetTrainDataTests(unittest.TestCase):
         Должен падать!
         """
         array = np.array([0, 5, 10, 4])
-        train = get_train_data(array, window=5, n_days_forward=3)
-        answer = np.array([[]])
-        self.assertEqual(train, answer)
+        with self.assertRaises(ValueError) as context:
+            get_prediction_data(array, window=5)
+
+        self.assertTrue('Window size must be lesser than size of an array' in str(context.exception))
 
     def test_get_train_data_5(self):
         """
@@ -59,9 +60,10 @@ class GetTrainDataTests(unittest.TestCase):
         Должен падать!
         """
         array = np.array([0, 5, 10, 4])
-        train = get_train_data(array, window=1, n_days_forward=7)
-        answer = np.array([[]])
-        self.assertEqual(train, answer)
+        with self.assertRaises(ValueError) as context:
+            get_prediction_data(array, n_days_forward=5)
+
+        self.assertTrue('n_days_forward must be lesser than size of an array' in str(context.exception))
 
     def test_get_train_data_6(self):
         """
@@ -72,7 +74,7 @@ class GetTrainDataTests(unittest.TestCase):
                             start = 3 stop = start + 5(window)
                             start = 7 stop = start + 5(window)
         """
-        train = get_train_data(self.array_1, window=5, n_days_forward=5)
+        train = get_prediction_data(self.array_1, window=5, n_days_forward=5)
         answer = np.array([[10, 4, 14, 7, 9],
                            [4, 14, 7, 9, 30],
                            [14, 7, 9, 30, 53],
