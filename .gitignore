@@ -4,3 +4,4 @@ vs-web/
 experiments/
 __pycache__
 requirements.txt
+*.ipynb
