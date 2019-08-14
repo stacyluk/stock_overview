@@ -1,28 +1,25 @@
+from flask import Flask, request
 from flask_sslify import SSLify
 import telebot
-from flask import Flask, request
-import os
+
 from alpha_vantage.timeseries import TimeSeries
 import matplotlib.pyplot as plt
-from datetime import datetime
-import pandas as pd
-from fbprophet import Prophet
+import os
+
+from config import ALPHA_VANTAGE_TOKEN, TELEGRAM_TOKEN, APP_NAME
+from model.linear_regression import CommonLinearRegressor
+from model.preprocessor import get_prediction_data, parse_json
+import pickle
 
 
-TOKEN = "890044169:AAEyYetqi0ZLqFzFnDAkpHW6QNWdgzcgfe0"
-APP_NAME = "stock-overviewbot"
-
-bot = telebot.TeleBot(TOKEN)
+bot = telebot.TeleBot(TELEGRAM_TOKEN)
 
 server = Flask(__name__)
 sslify = SSLify(server)
 
-
-def str_to_date(x):
-    return datetime.strptime(x, '%Y-%m-%d')
-
-
-m = Prophet()
+# Десериализация модели google
+with open('production/google.pickle', 'rb') as file:
+    google = pickle.load(file)
 
 
 @bot.message_handler(commands=['start'])
@@ -49,8 +46,16 @@ def get_text_messages(message):
         bot.send_message(message.from_user.id, "Выберите одну из трех компаний, для которой вы хотите посмотреть предсказания цены акций: /Microsoft, /Google или /Facebook.")
     elif message.text == "/Microsoft":
         bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
+
     elif message.text == "/Google":
-        bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
+        # предсказание цены акций на десять дней для google
+        ts = TimeSeries(key=ALPHA_VANTAGE_TOKEN, output_format='json')
+        data, meta_data = ts.get_daily('GOOGL', outputsize='compact')
+        close_price = parse_json(data)[:, 3]
+        X = get_prediction_data(close_price, window=20, n_days_forward=10)
+        prediction = google.predict(X)
+        bot.send_message(message.from_user.id, f"Предсказание цен на ближайшие десять дней: {prediction}")
+
     elif message.text == "/Facebook":
         bot.send_message(message.from_user.id, "Ведутся технические работы. Приносим свои извинения за неудобства.")
     elif message.text == "/profitwhy":
@@ -59,7 +64,7 @@ def get_text_messages(message):
        bot.send_message(message.from_user.id, "Я тебя не понимаю. Напиши /help.")
 
 
-@server.route("/" + TOKEN, methods=['POST'])
+@server.route("/" + TELEGRAM_TOKEN, methods=['POST'])
 def getMessage():
     bot.process_new_updates([telebot.types.Update.de_json(request.stream.read().decode("utf-8"))])
     return "!", 200
@@ -68,10 +73,9 @@ def getMessage():
 @server.route("/", methods=['GET'])
 def webhook():
     bot.remove_webhook()
-    bot.set_webhook(url="https://{}.herokuapp.com/{}".format(APP_NAME, TOKEN))
+    bot.set_webhook(url="https://{}.herokuapp.com/{}".format(APP_NAME, TELEGRAM_TOKEN))
     return "!", 200
 
 
 if __name__ == "__main__":
-    #server.run()
     server.run(host="0.0.0.0", port=os.environ.get('PORT', 5000))
